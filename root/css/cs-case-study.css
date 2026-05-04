@@ -37,7 +37,25 @@ body {
   padding: 24px;
   background: var(--bg);
   display: grid;
+  grid-template-columns: 1fr 320px;
   gap: 18px;
+}
+
+.cs-case-shell > .cs-hero {
+  grid-column: 1 / -1;
+}
+
+.cs-case-shell > .cs-context-panel {
+  grid-column: 1;
+}
+
+.cs-case-shell > .cs-section:not(.cs-outcomes-section) {
+  grid-column: 1;
+}
+
+.cs-case-shell > .cs-outcomes-section {
+  grid-column: 2;
+  grid-row: 2 / span 2;
 }
 
 .surface {
@@ -49,7 +67,6 @@ body {
 
 .cs-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(220px, 300px);
   gap: 16px;
   align-items: start;
   padding: 18px 20px 20px;
@@ -129,7 +146,7 @@ body {
 
 .cs-context-grid > .cs-copy-stack {
   min-height: 100%;
-  align-content: top;
+  align-content: center;
 }
 
 .cs-visual-card,
@@ -156,19 +173,11 @@ body {
   background: rgba(255, 255, 255, 0.01);
 }
 
-.cs-visual-caption {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .14em;
-  text-transform: lowercase;
-  color: rgba(181, 196, 255, .75);
-}
-
 .cs-visual-image {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 0;
 }
 
@@ -246,13 +255,25 @@ body {
   align-items: stretch;
 }
 
+.cs-card-body--text-only {
+  grid-template-columns: 1fr;
+}
+
+.cs-card-body--text-only .cs-copy-stack {
+  grid-column: 1 / -1;
+}
+
+.cs-card-body--text-only .cs-media-slot {
+  display: none;
+}
+
 .cs-media-slot {
   min-height: 118px;
 }
 
 .cs-outcomes-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 12px;
 }
 
@@ -276,6 +297,37 @@ body {
   letter-spacing: .08em;
   text-transform: lowercase;
   color: color-mix(in srgb, var(--fg) 66%, var(--muted) 34%);
+}
+
+.cs-snapshots-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.cs-snapshot-item {
+  width: 100%;
+  height: 160px;
+  border: 1px solid var(--cs-border-strong);
+  background: rgba(255, 255, 255, 0.01);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.cs-snapshot-item .media-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.cs-snapshot-item:hover .media-img {
+  transform: scale(1.02);
 }
 
 @media (max-width: 920px) {

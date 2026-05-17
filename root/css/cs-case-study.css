@@ -39,6 +39,8 @@ body {
   display: grid;
   grid-template-columns: 1fr 320px;
   gap: 18px;
+  align-items: start;
+  position: relative;
 }
 
 .cs-case-shell > .cs-hero {
@@ -54,8 +56,26 @@ body {
 }
 
 .cs-case-shell > .cs-outcomes-section {
-  grid-column: 2;
-  grid-row: 2 / span 2;
+  /* take the outcomes column out of grid flow so it doesn't expand row heights */
+  position: absolute;
+  right: 24px; /* match shell padding */
+  width: 320px;
+  top: var(--outcomes-top, 140px);
+  align-self: start;
+  box-sizing: border-box;
+  max-height: calc(100vh - var(--outcomes-top, 140px) - 24px);
+  overflow: auto;
+  padding-right: 8px;
+}
+
+/* Ensure the context panel also starts at the top of its grid cell */
+.cs-case-shell > .cs-context-panel {
+  align-self: start;
+}
+
+/* Add breathing room below the project context so contributions follow the content height */
+.cs-context-panel {
+  /* spacing handled on the following section to keep layout predictable */
 }
 
 .surface {
@@ -111,6 +131,34 @@ body {
   padding: 18px 20px 20px;
 }
 
+/* Ensure a small, consistent gap between stacked panels so sections
+   move up fluidly based on content height. Adjust the value below
+   to control the minimum spacing between context and contributions. */
+.cs-section {
+  margin-top: 8px;
+}
+
+/* Remove extra gap specifically when a .cs-section follows the context panel */
+.cs-context-panel + .cs-section {
+  margin-top: 18px !important;
+}
+
+/* Ensure outcomes column has no extra top offset compared to left column */
+.cs-case-shell > .cs-outcomes-section {
+  margin-top: 0;
+}
+
+.cs-case-shell > .cs-outcomes-section .cs-panel-label-row {
+  margin-top: 0 !important;
+}
+
+/* Ensure outcomes column panel labels (which may have inline styles)
+   match the same top gap as other sections. Use !important to
+   override inline `style` attributes so spacing is equal. */
+.cs-outcomes-section .cs-panel-label-row {
+  margin-top: 8px !important;
+}
+
 .cs-panel-label-row {
   display: flex;
   align-items: center;
@@ -145,8 +193,7 @@ body {
 }
 
 .cs-context-grid > .cs-copy-stack {
-  min-height: 100%;
-  align-content: center;
+  align-content: start;
 }
 
 .cs-visual-card,
@@ -217,7 +264,7 @@ body {
   line-height: 1.2;
   font-weight: 600;
   letter-spacing: -.02em;
-  text-transform: lowercase;
+    gap: 18px;
 }
 
 .cs-badge-row {
@@ -231,6 +278,14 @@ body {
   width: 28px;
   height: 28px;
   display: block;
+  /* mobile / narrow: restore normal flow so sidebar stacks below content */
+  .cs-case-shell > .cs-outcomes-section {
+    position: static;
+    width: auto;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
   object-fit: contain;
   flex: 0 0 auto;
   opacity: .92;
@@ -277,6 +332,11 @@ body {
   gap: 12px;
 }
 
+/* Add breathing room below outcomes so the snapshots label isn't crowded */
+.cs-outcomes-grid {
+  margin-bottom: 18px;
+}
+
 .cs-outcome-card {
   padding: 18px 16px 16px;
   display: grid;
@@ -306,6 +366,37 @@ body {
   margin-top: 12px;
 }
 
+/* Slight padding above snapshots for visual separation */
+.cs-snapshots-grid {
+  padding-top: 8px;
+}
+
+/* Sidebar-only scrollbar styling: apply only to the outcomes/sidebar container
+   (the outcomes section is the actual scroll container). */
+.cs-case-shell > .cs-outcomes-section {
+  /* Firefox: use a slightly translucent accent for the thumb */
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent) 75%, transparent 25%) transparent;
+}
+
+/* WebKit browsers */
+.cs-case-shell > .cs-outcomes-section::-webkit-scrollbar {
+  width: 18px;
+  height: 18px;
+}
+.cs-case-shell > .cs-outcomes-section::-webkit-scrollbar-track {
+  background: transparent;
+}
+.cs-case-shell > .cs-outcomes-section::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--accent) 75%, transparent 25%);
+  border-radius: 10px;
+  border: 5px solid transparent;
+  background-clip: padding-box;
+}
+.cs-case-shell > .cs-outcomes-section::-webkit-scrollbar-thumb:hover {
+  filter: brightness(1.08);
+}
+
 .cs-snapshot-item {
   width: 100%;
   height: 160px;
@@ -316,6 +407,7 @@ body {
   justify-content: center;
   overflow: hidden;
   cursor: pointer;
+  border-radius: 6px;
 }
 
 .cs-snapshot-item .media-img {
@@ -324,6 +416,7 @@ body {
   height: 100%;
   object-fit: cover;
   transition: transform 0.2s ease;
+  border-radius: 12px;
 }
 
 .cs-snapshot-item:hover .media-img {
@@ -384,4 +477,55 @@ body {
   .cs-media-slot {
     min-height: 96px;
   }
+
+/* Visual debug helpers — enable by adding `visual-debug` to the <body> element */
+body.visual-debug .cs-case-shell {
+  outline: 2px dashed rgba(255, 0, 0, 0.25);
+}
+body.visual-debug .cs-case-shell > * {
+  outline: 1px dashed rgba(0, 255, 255, 0.15);
+}
+body.visual-debug .cs-context-panel {
+  outline: 2px solid rgba(0, 200, 0, 0.18);
+}
+body.visual-debug .cs-outcomes-section {
+  outline: 2px solid rgba(0, 100, 255, 0.18);
+}
+body.visual-debug .cs-panel-label-row {
+  outline: 1px solid rgba(255, 200, 0, 0.2);
+  background: rgba(255, 200, 0, 0.02);
+}
+
+/* Helpful utility to highlight layout gaps */
+body.visual-debug .cs-snapshots-grid,
+body.visual-debug .cs-contribution-list,
+body.visual-debug .cs-outcomes-grid {
+  background-image: linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+}
+}
+
+/* Replicated visual debug helpers outside media query so they work on desktop */
+/* Enable by adding `visual-debug` to the <body> element */
+body.visual-debug .cs-case-shell {
+  outline: 2px dashed rgba(255, 0, 0, 0.25);
+}
+body.visual-debug .cs-case-shell > * {
+  outline: 1px dashed rgba(0, 255, 255, 0.15);
+}
+body.visual-debug .cs-context-panel {
+  outline: 2px solid rgba(0, 200, 0, 0.18);
+}
+body.visual-debug .cs-outcomes-section {
+  outline: 2px solid rgba(0, 100, 255, 0.18);
+}
+body.visual-debug .cs-panel-label-row {
+  outline: 1px solid rgba(255, 200, 0, 0.2);
+  background: rgba(255, 200, 0, 0.02);
+}
+
+/* Helpful utility to highlight layout gaps */
+body.visual-debug .cs-snapshots-grid,
+body.visual-debug .cs-contribution-list,
+body.visual-debug .cs-outcomes-grid {
+  background-image: linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
 }

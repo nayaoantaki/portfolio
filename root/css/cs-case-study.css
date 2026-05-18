@@ -59,13 +59,15 @@ body {
   /* take the outcomes column out of grid flow so it doesn't expand row heights */
   position: absolute;
   right: 24px; /* match shell padding */
-  width: 320px;
+  width: min(320px, calc(100% - 48px));
   top: var(--outcomes-top, 140px);
   align-self: start;
   box-sizing: border-box;
-  max-height: calc(100vh - var(--outcomes-top, 140px) - 24px);
+  min-height: 320px;
+  max-height: min(680px, calc(100vh - 120px));
   overflow: auto;
   padding-right: 8px;
+  scrollbar-gutter: stable;
 }
 
 /* Ensure the context panel also starts at the top of its grid cell */
@@ -278,14 +280,6 @@ body {
   width: 28px;
   height: 28px;
   display: block;
-  /* mobile / narrow: restore normal flow so sidebar stacks below content */
-  .cs-case-shell > .cs-outcomes-section {
-    position: static;
-    width: auto;
-    max-height: none;
-    overflow: visible;
-    padding-right: 0;
-  }
   object-fit: contain;
   flex: 0 0 auto;
   opacity: .92;
@@ -355,7 +349,7 @@ body {
   font-family: 'Space Mono', monospace;
   font-size: 10px;
   letter-spacing: .08em;
-  text-transform: lowercase;
+  text-transform: uppercase;
   color: color-mix(in srgb, var(--fg) 66%, var(--muted) 34%);
 }
 
@@ -428,6 +422,15 @@ body {
     width: min(100% - 24px, 1180px);
     margin-top: 96px;
     padding: 20px;
+  }
+
+  .cs-case-shell > .cs-outcomes-section {
+    position: static;
+    width: auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
   }
 
   .cs-hero {

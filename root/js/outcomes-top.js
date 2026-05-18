@@ -26,13 +26,16 @@
     const lastRect = lastLeft.getBoundingClientRect();
     const outcomesRect = outcomes.getBoundingClientRect();
 
-    // Center the outcomes container vertically within the left-column block
+    // Vertically center outcomes within the left-column content block.
+    // Height is capped in CSS, so this stays stable on shorter viewports.
     const centerY = (firstRect.top + lastRect.bottom) / 2;
     let top = centerY - outcomesRect.height / 2 - shellRect.top;
 
     // Keep a sensible minimum/maximum so it doesn't overlap shell edges
     const minTop = 24;
-    const maxTop = Math.max(minTop, shellRect.height - outcomesRect.height - 24);
+    const viewportMaxHeight = Math.max(320, window.innerHeight - 120);
+    const effectivePanelHeight = Math.min(outcomesRect.height, viewportMaxHeight);
+    const maxTop = Math.max(minTop, shellRect.height - effectivePanelHeight - 24);
     if (top < minTop) top = minTop;
     if (top > maxTop) top = maxTop;
 

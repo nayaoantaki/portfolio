@@ -512,8 +512,10 @@ nav {
 
 .snapshot-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 26px;
+  width: 100%;
+  max-width: none;
 }
 
 .snapshot-card {
@@ -664,6 +666,7 @@ nav {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
+  max-width: 1300px;
 }
 
 .cs-card {
@@ -720,7 +723,7 @@ nav {
 .cs-card-copy {
   color: var(--muted);
   line-height: 1.6;
-  max-width: 52ch;
+  max-width: 102ch;
 }
 
 .cs-card-meta {

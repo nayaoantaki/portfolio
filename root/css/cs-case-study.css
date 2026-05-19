@@ -1,0 +1,431 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital@0;1&display=swap');
+
+:root {
+  --surface-bg: rgba(255, 255, 255, 0.03);
+  --surface-solid: #111111;
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --border-light: rgba(255, 255, 255, 0.15);
+  --cs-panel: rgba(255, 255, 255, 0.03);
+  --cs-panel-strong: rgba(255, 255, 255, 0.045);
+  --cs-border: rgba(255, 255, 255, 0.08);
+  --cs-border-strong: rgba(255, 255, 255, 0.14);
+  --cs-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
+  --cs-panel-padding: 18px 20px 20px;
+  --cs-border-radius: 12px;
+  --cs-section-gap: 8px;
+  --cs-gap-xs: 8px;
+  --cs-gap-sm: 12px;
+  --cs-gap-md: 16px;
+  --cs-radius-sm: 6px;
+  --cs-panel-padding-mobile: 14px;
+}
+
+[data-theme="light"] {
+  --surface-bg: rgba(0, 0, 0, 0.03);
+  --surface-solid: #FFFFFF;
+  --border-medium: rgba(0, 0, 0, 0.12);
+  --border-light: rgba(0, 0, 0, 0.15);
+  --cs-panel: rgba(0, 0, 0, 0.03);
+  --cs-panel-strong: rgba(0, 0, 0, 0.05);
+  --cs-border: rgba(0, 0, 0, 0.08);
+  --cs-border-strong: rgba(0, 0, 0, 0.14);
+  --cs-shadow: 0 18px 60px rgba(0, 0, 0, 0.08);
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+}
+
+.cs-case-shell {
+  width: min(100% - 48px, 1180px);
+  margin: 100px auto 28px;
+  border: 2px solid var(--border-medium);
+  border-radius: 24px;
+  padding: 24px;
+  background: var(--bg);
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 18px;
+  align-items: start;
+  position: relative;
+}
+
+.cs-case-shell > .cs-hero {
+  grid-column: 1 / -1;
+}
+
+.cs-case-shell > .cs-context-panel {
+  grid-column: 1;
+}
+
+.cs-case-shell > .cs-section:not(.cs-outcomes-section) {
+  grid-column: 1;
+}
+
+.cs-case-shell > .cs-outcomes-section {
+  /* take the outcomes column out of grid flow so it doesn't expand row heights */
+  position: absolute;
+  right: 24px; /* match shell padding */
+  width: min(320px, calc(100% - 48px));
+  top: var(--outcomes-top, 140px);
+  align-self: start;
+  box-sizing: border-box;
+  height: var(--outcomes-height, min(680px, calc(100vh - 120px)));
+  overflow: auto;
+  padding-right: 8px;
+  scrollbar-gutter: stable;
+}
+
+/* Ensure the context panel also starts at the top of its grid cell */
+.cs-case-shell > .cs-context-panel {
+  align-self: start;
+}
+
+/* Add breathing room below the project context so contributions follow the content height */
+.cs-context-panel {
+  /* spacing handled on the following section to keep layout predictable */
+}
+
+.surface {
+  background: var(--surface-bg);
+  border: 1px solid var(--cs-border);
+  border-radius: var(--cs-border-radius);
+  box-shadow: none;
+}
+
+.cs-hero {
+  display: grid;
+  gap: var(--cs-gap-md);
+  align-items: start;
+  padding: var(--cs-panel-padding);
+}
+
+.cs-hero-copy {
+  display: grid;
+  gap: 20px;
+}
+
+.cs-kicker,
+.cs-panel-label,
+.cs-step {
+  font-family: 'Space Mono', monospace;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.cs-kicker {
+  font-size: 10px;
+  color: var(--accent);
+}
+
+.cs-title {
+  font-size: clamp(2rem, 5vw, 3.95rem);
+  line-height: .95;
+  letter-spacing: -.04em;
+  max-width: 100%;
+}
+
+/* .cs-meta removed (unused) */
+
+.cs-panel,
+.cs-section {
+  padding: var(--cs-panel-padding);
+}
+
+/* Ensure a small, consistent gap between stacked panels so sections
+   move up fluidly based on content height. Adjust the value below
+   to control the minimum spacing between context and contributions. */
+.cs-section {
+  margin-top: var(--cs-section-gap);
+}
+
+/* Remove extra gap specifically when a .cs-section follows the context panel */
+.cs-context-panel + .cs-section {
+  margin-top: 18px !important;
+}
+
+/* Ensure outcomes column has no extra top offset compared to left column */
+.cs-case-shell > .cs-outcomes-section {
+  margin-top: 0;
+}
+
+.cs-case-shell > .cs-outcomes-section .cs-panel-label-row {
+  margin-top: 0 !important;
+}
+
+/* Ensure outcomes column panel labels (which may have inline styles)
+   match the same top gap as other sections. Use !important to
+   override inline `style` attributes so spacing is equal. */
+.cs-outcomes-section .cs-panel-label-row {
+  margin-top: 8px !important;
+}
+
+.cs-panel-label-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.cs-panel-label-row::before,
+.cs-panel-label-row::after {
+  content: '';
+  height: 1px;
+  background: var(--cs-border);
+  flex: 1;
+}
+
+.cs-panel-label {
+  font-size: 10px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.cs-copy-stack {
+  display: grid;
+  gap: var(--cs-gap-xs);
+}
+
+/* .cs-context-grid removed; related rule omitted */
+
+.cs-contribution-list {
+  display: grid;
+  gap: var(--cs-gap-sm);
+}
+
+.cs-contribution-card {
+  padding: 14px;
+  display: grid;
+  gap: 14px;
+}
+
+.cs-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 16px;
+}
+
+.cs-card-title-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cs-step {
+  font-size: 13px;
+  color: var(--accent);
+  min-width: 32px;
+}
+
+.cs-card-title {
+  font-size: clamp(1rem, 1.4vw, 1.3rem);
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -.02em;
+    gap: 18px;
+}
+
+.cs-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cs-gap-xs);
+  justify-content: flex-end;
+}
+
+.cs-tool-logo {
+  width: 28px;
+  height: 28px;
+  display: block;
+  object-fit: contain;
+  flex: 0 0 auto;
+  opacity: .92;
+}
+
+.cs-tool-logo[src$=".svg"],
+.cs-tool-logo[src*=".svg?"],
+.cs-tool-logo[src^="data:image/svg+xml"] {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
+[data-theme="light"] .cs-tool-logo[src$=".svg"],
+[data-theme="light"] .cs-tool-logo[src*=".svg?"],
+[data-theme="light"] .cs-tool-logo[src^="data:image/svg+xml"] {
+  filter: none;
+}
+
+.cs-card-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(250px, .95fr);
+  gap: var(--cs-gap-sm);
+  align-items: stretch;
+}
+
+.cs-card-body--text-only {
+  grid-template-columns: 1fr;
+}
+
+.cs-card-body--text-only .cs-copy-stack {
+  grid-column: 1 / -1;
+}
+
+.cs-card-body--text-only .cs-media-slot {
+  display: none;
+}
+
+.cs-media-slot {
+  min-height: 118px;
+}
+
+.cs-outcomes-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--cs-gap-sm);
+  margin-bottom: 18px;
+}
+
+.cs-outcome-card {
+  padding: 18px 16px 16px;
+  display: grid;
+  gap: 6px;
+}
+
+.cs-outcome-value {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -.04em;
+  color: var(--accent);
+}
+
+.cs-outcome-copy {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--fg) 66%, var(--muted) 34%);
+}
+
+.cs-snapshots-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--cs-gap-sm);
+  margin-top: 12px;
+}
+
+/* Slight padding above snapshots for visual separation */
+.cs-snapshots-grid {
+  padding-top: var(--cs-gap-xs);
+}
+
+/* Sidebar-only scrollbar styling: apply only to the outcomes/sidebar container
+   (the outcomes section is the actual scroll container). */
+.cs-case-shell > .cs-outcomes-section {
+  /* Firefox: use a slightly translucent accent for the thumb */
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent) 75%, transparent 25%) transparent;
+}
+
+/* WebKit browsers */
+.cs-case-shell > .cs-outcomes-section::-webkit-scrollbar {
+  width: 18px;
+  height: 18px;
+}
+.cs-case-shell > .cs-outcomes-section::-webkit-scrollbar-track {
+  background: transparent;
+}
+.cs-case-shell > .cs-outcomes-section::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--accent) 75%, transparent 25%);
+  border-radius: 10px;
+  border: 5px solid transparent;
+  background-clip: padding-box;
+}
+.cs-case-shell > .cs-outcomes-section::-webkit-scrollbar-thumb:hover {
+  filter: brightness(1.08);
+}
+
+.cs-snapshot-item {
+  width: 100%;
+  height: 160px;
+  border: 1px solid var(--cs-border-strong);
+  background: rgba(255, 255, 255, 0.01);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: var(--cs-radius-sm);
+}
+
+.cs-snapshot-item .media-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+  border-radius: var(--cs-border-radius);
+}
+
+.cs-snapshot-item:hover .media-img {
+  transform: scale(1.02);
+}
+
+@media (max-width: 920px) {
+  .cs-case-shell {
+    width: min(100% - 24px, 1180px);
+    margin-top: 96px;
+    padding: 20px;
+  }
+
+  .cs-case-shell > .cs-outcomes-section {
+    position: static;
+    width: auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  .cs-hero {
+    grid-template-columns: 1fr;
+  }
+
+
+  .cs-card-body,
+  .cs-outcomes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cs-card-head {
+    flex-direction: column;
+  }
+
+  .cs-badge-row {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .cs-case-shell {
+    width: min(100% - 16px, 1180px);
+    gap: 14px;
+    margin-top: 88px;
+    padding: 16px;
+  }
+  .cs-hero {
+    display: grid;
+    gap: var(--cs-gap-md);
+    align-items: start;
+  }
+
+  .cs-hero,
+  .cs-panel,
+  .cs-section {
+    padding: var(--cs-panel-padding-mobile);
+  }
+  .cs-title {
+    max-width: none;
+  }
+}

@@ -10,6 +10,14 @@
   --cs-border: rgba(255, 255, 255, 0.08);
   --cs-border-strong: rgba(255, 255, 255, 0.14);
   --cs-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
+  --cs-panel-padding: 18px 20px 20px;
+  --cs-border-radius: 12px;
+  --cs-section-gap: 8px;
+  --cs-gap-xs: 8px;
+  --cs-gap-sm: 12px;
+  --cs-gap-md: 16px;
+  --cs-radius-sm: 6px;
+  --cs-panel-padding-mobile: 14px;
 }
 
 [data-theme="light"] {
@@ -63,8 +71,7 @@ body {
   top: var(--outcomes-top, 140px);
   align-self: start;
   box-sizing: border-box;
-  min-height: 320px;
-  max-height: min(680px, calc(100vh - 120px));
+  height: var(--outcomes-height, min(680px, calc(100vh - 120px)));
   overflow: auto;
   padding-right: 8px;
   scrollbar-gutter: stable;
@@ -83,15 +90,15 @@ body {
 .surface {
   background: var(--surface-bg);
   border: 1px solid var(--cs-border);
-  border-radius: 12px;
+  border-radius: var(--cs-border-radius);
   box-shadow: none;
 }
 
 .cs-hero {
   display: grid;
-  gap: 16px;
+  gap: var(--cs-gap-md);
   align-items: start;
-  padding: 18px 20px 20px;
+  padding: var(--cs-panel-padding);
 }
 
 .cs-hero-copy {
@@ -119,25 +126,18 @@ body {
   max-width: 100%;
 }
 
-.cs-meta {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--fg) 58%, var(--muted) 42%);
-  line-height: 1.5;
-}
+/* .cs-meta removed (unused) */
 
 .cs-panel,
 .cs-section {
-  padding: 18px 20px 20px;
+  padding: var(--cs-panel-padding);
 }
 
 /* Ensure a small, consistent gap between stacked panels so sections
    move up fluidly based on content height. Adjust the value below
    to control the minimum spacing between context and contributions. */
 .cs-section {
-  margin-top: 8px;
+  margin-top: var(--cs-section-gap);
 }
 
 /* Remove extra gap specifically when a .cs-section follows the context panel */
@@ -182,57 +182,16 @@ body {
   white-space: nowrap;
 }
 
-.cs-context-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr);
-  gap: 12px;
-  align-items: stretch;
-}
-
 .cs-copy-stack {
   display: grid;
-  gap: 8px;
+  gap: var(--cs-gap-xs);
 }
 
-.cs-context-grid > .cs-copy-stack {
-  align-content: start;
-}
-
-.cs-visual-card,
-.cs-media-slot {
-  min-height: 100%;
-  border: 1px solid var(--cs-border-strong);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.01);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  min-height: 120px;
-}
-
-.cs-visual-card {
-  border: none;
-  background: transparent;
-}
-
-[data-theme="light"] .cs-visual-card,
-[data-theme="light"] .cs-media-slot {
-  border-color: var(--border-medium);
-  background: rgba(255, 255, 255, 0.01);
-}
-
-.cs-visual-image {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 0;
-}
+/* .cs-context-grid removed; related rule omitted */
 
 .cs-contribution-list {
   display: grid;
-  gap: 12px;
+  gap: var(--cs-gap-sm);
 }
 
 .cs-contribution-card {
@@ -272,7 +231,7 @@ body {
 .cs-badge-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--cs-gap-xs);
   justify-content: flex-end;
 }
 
@@ -300,7 +259,7 @@ body {
 .cs-card-body {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(250px, .95fr);
-  gap: 12px;
+  gap: var(--cs-gap-sm);
   align-items: stretch;
 }
 
@@ -323,11 +282,7 @@ body {
 .cs-outcomes-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
-}
-
-/* Add breathing room below outcomes so the snapshots label isn't crowded */
-.cs-outcomes-grid {
+  gap: var(--cs-gap-sm);
   margin-bottom: 18px;
 }
 
@@ -356,13 +311,13 @@ body {
 .cs-snapshots-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: var(--cs-gap-sm);
   margin-top: 12px;
 }
 
 /* Slight padding above snapshots for visual separation */
 .cs-snapshots-grid {
-  padding-top: 8px;
+  padding-top: var(--cs-gap-xs);
 }
 
 /* Sidebar-only scrollbar styling: apply only to the outcomes/sidebar container
@@ -401,7 +356,7 @@ body {
   justify-content: center;
   overflow: hidden;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: var(--cs-radius-sm);
 }
 
 .cs-snapshot-item .media-img {
@@ -410,7 +365,7 @@ body {
   height: 100%;
   object-fit: cover;
   transition: transform 0.2s ease;
-  border-radius: 12px;
+  border-radius: var(--cs-border-radius);
 }
 
 .cs-snapshot-item:hover .media-img {
@@ -437,13 +392,7 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .cs-hero-meta {
-    justify-self: start;
-    max-width: none;
-    padding-top: 0;
-  }
 
-  .cs-context-grid,
   .cs-card-body,
   .cs-outcomes-grid {
     grid-template-columns: 1fr;
@@ -465,70 +414,18 @@ body {
     margin-top: 88px;
     padding: 16px;
   }
+  .cs-hero {
+    display: grid;
+    gap: var(--cs-gap-md);
+    align-items: start;
+  }
 
   .cs-hero,
   .cs-panel,
   .cs-section {
-    padding: 14px;
+    padding: var(--cs-panel-padding-mobile);
   }
-
   .cs-title {
     max-width: none;
   }
-
-  .cs-visual-card,
-  .cs-media-slot {
-    min-height: 96px;
-  }
-
-/* Visual debug helpers — enable by adding `visual-debug` to the <body> element */
-body.visual-debug .cs-case-shell {
-  outline: 2px dashed rgba(255, 0, 0, 0.25);
-}
-body.visual-debug .cs-case-shell > * {
-  outline: 1px dashed rgba(0, 255, 255, 0.15);
-}
-body.visual-debug .cs-context-panel {
-  outline: 2px solid rgba(0, 200, 0, 0.18);
-}
-body.visual-debug .cs-outcomes-section {
-  outline: 2px solid rgba(0, 100, 255, 0.18);
-}
-body.visual-debug .cs-panel-label-row {
-  outline: 1px solid rgba(255, 200, 0, 0.2);
-  background: rgba(255, 200, 0, 0.02);
-}
-
-/* Helpful utility to highlight layout gaps */
-body.visual-debug .cs-snapshots-grid,
-body.visual-debug .cs-contribution-list,
-body.visual-debug .cs-outcomes-grid {
-  background-image: linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-}
-}
-
-/* Replicated visual debug helpers outside media query so they work on desktop */
-/* Enable by adding `visual-debug` to the <body> element */
-body.visual-debug .cs-case-shell {
-  outline: 2px dashed rgba(255, 0, 0, 0.25);
-}
-body.visual-debug .cs-case-shell > * {
-  outline: 1px dashed rgba(0, 255, 255, 0.15);
-}
-body.visual-debug .cs-context-panel {
-  outline: 2px solid rgba(0, 200, 0, 0.18);
-}
-body.visual-debug .cs-outcomes-section {
-  outline: 2px solid rgba(0, 100, 255, 0.18);
-}
-body.visual-debug .cs-panel-label-row {
-  outline: 1px solid rgba(255, 200, 0, 0.2);
-  background: rgba(255, 200, 0, 0.02);
-}
-
-/* Helpful utility to highlight layout gaps */
-body.visual-debug .cs-snapshots-grid,
-body.visual-debug .cs-contribution-list,
-body.visual-debug .cs-outcomes-grid {
-  background-image: linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
 }

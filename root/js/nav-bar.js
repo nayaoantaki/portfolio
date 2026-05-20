@@ -6,10 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const assetsPrefix = mount.getAttribute('data-assets-prefix') || '../../assets';
     const homeHref = mount.getAttribute('data-home-href') || '../index.html';
     const homeLabel = mount.getAttribute('data-home-label') || 'NoA';
+    const homeWidgetSrc = mount.getAttribute('data-home-widget-src') || '';
+
+    const homeLogoHtml = homeWidgetSrc
+      ? `<a href="${homeHref}" class="nav-logo"><img src="${homeWidgetSrc}" alt="${homeLabel || 'home'}" /></a>`
+      : `<a href="${homeHref}" class="nav-logo">${homeLabel}</a>`;
 
     mount.innerHTML = `
       <nav>
-        <a href="${homeHref}" class="nav-logo">${homeLabel}</a>
+        ${homeLogoHtml}
         <div class="nav-links">
           <div class="home-icon-links">
             <a href="https://github.com/nayaoantaki" class="home-icon-link github" aria-label="GitHub">
